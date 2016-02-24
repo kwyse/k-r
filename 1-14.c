@@ -7,18 +7,20 @@ int main() {
     for (int i = 0; i < MAX_CHARS; i++) char_counts[i] = 0;
 
     int input_char;
-    while ((input_char = getchar() != ';')) {
-        if (input_char >= 'a' && input_char <= 'z') {
+    while ((input_char = getchar()) != EOF) {
+        if (input_char >= 'a' && input_char <= 'z')
             char_counts[input_char - 'a']++;
-        }
+        else if (input_char >= 'A' && input_char <= 'Z')
+            char_counts[input_char - 'A']++;
     }
 
+    printf("\n");
     for (int i = 0; i < MAX_CHARS; i++) {
-        printf("%c. ", i + 'a');
-        for (int j = 0; j < char_counts[i]; j++) {
-            printf("#");
+        printf("%c| ", i + 'A');
+        for (size_t j = 0; j < char_counts[i]; j++) {
+            putchar('#');
         }
 
-        puts("");
+        printf("\n");
     }
 }
