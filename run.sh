@@ -5,12 +5,19 @@ function cleanup {
 }
 trap cleanup EXIT
 
-if [[ $# -ne 2 ]]; then
-  echo "Usage: run.sh <chapter> <exercise>"
+if [[ $# -eq 2 ]]; then
+  filename="$1-$2.c"
+fi
+
+if [[ $# -eq 3 ]]; then
+  filename="$1-$2-$3.c"
+fi
+
+if [[ -z $filename ]]; then
+  echo "Usage: run.sh <chapter> <exercise> [version]"
   exit -1
 fi
 
-filename="$1-$2.c"
 if [[ ! -f $filename ]]; then
   echo -e "Cannot find file $filename\nExiting..."
   exit -1
