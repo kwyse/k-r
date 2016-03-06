@@ -23,5 +23,5 @@ if [[ ! -f $filename ]]; then
   exit -1
 fi
 
-gcc $filename
+gcc -std=c11 $filename
 ./a.out
