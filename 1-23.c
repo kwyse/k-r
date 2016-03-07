@@ -5,8 +5,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-void rmsubstr(char str[], size_t start, size_t end);
-
 char* getstr(char* filename) {
   FILE* file = fopen(filename, "r");
   if (!file) {
@@ -42,23 +40,30 @@ void remove_comments(char str[]) {
       i++;
       continue;
     }
-    
-    if (str[i] == '\'' && !in_dquote)
+
+    if (str[i] == '\'' && !in_dquote) {
       in_squote = !in_squote;
+      continue;
+    }
 
-    if (str[i] == '\"' && !in_squote)
+    if (str[i] == '\"' && !in_squote) {
       in_dquote = !in_dquote;
+      continue;
+    }
 
-    if (str[i] == '/' && str[i + 1] == '*')
+    if (str[i] == '/' && str[i + 1] == '*' && !in_squote && !in_dquote)
       in_cblock = true;
 
-    if (str[i] == '*' && str[i + 1] == '/') {
+    if (str[i] == '*' && str[i + 1] == '/' && !in_squote && !in_dquote) {
       in_cblock = false;
-      memmove(str + i, str + i + 2, strlen(str + i + 2) + 1);
+      if (!in_squote && !in_dquote) {
+	memmove(str + i, str + i + 2, strlen(str + i + 2) + 1);
+	i--;
+      }
     }
 
     if (in_cblock && !in_squote && !in_dquote) {
-      memmove(str + i, str + i + 1, strlen(str + i + 1) + 1);
+      memmove(str + i, str + i + 1, strlen(str + i + 1) + 2);
       i--;
     }
 
@@ -71,6 +76,8 @@ int main() {
   char str[strlen(input)];
   strcpy(str, input);
   free(input);
+
+  puts("A comment that is /* in quotes */ will not be removed");
 
   remove_comments(str);
   puts(str);
