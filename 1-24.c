@@ -104,12 +104,24 @@ void check_balanced_chars(char* str) {
   
   size_t len = strlen(str);
   uint32_t linenum = 1, columnnum = 1;
+  bool in_cblock = false;
+
   for (size_t i = 0; i < len; i++) {
     if (str[i] == '\n') {
       linenum++;
       columnnum = 1;
       continue;
     }
+
+    if (str[i] == '/' && str[i + 1] == '*' && !in_cblock)
+      in_cblock = true;
+    else if (str[i] == '*' && str[i + 1] == '/' && in_cblock) {
+      in_cblock = false;
+      i++;
+    }
+
+    if (in_cblock)
+      continue;
     
     if (is_balanced_schar(str[i]) && !in_quote(stack))
       stack_push(stack, str[i]);
@@ -150,7 +162,7 @@ void check_balanced_chars(char* str) {
 }
 
 int main() {
-  char* input = "{}'(]'[]{()}\"hello[[\"()";
+  char* input = "{}'(]'[]{()}\"hello[[\"()/*[](*/(}";
   check_balanced_chars(input);
   return EXIT_SUCCESS;
 }
