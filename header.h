@@ -6,12 +6,18 @@
 #include <string.h>
 
 void putd(int d);
+void putf(double f);
 size_t getlnlen(char* line);
 void reverse(char str[]);
 
 // Prints a signed integer to stdout
 void putd(int d) {
   printf("%d\n", d);
+}
+
+// Prints a double to stdout
+void putf(double f) {
+  printf("%g\n", f);
 }
 
 // Returns the length of a line of characters
