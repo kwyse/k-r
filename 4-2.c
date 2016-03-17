@@ -29,20 +29,14 @@ double atof(const char* s) {
   double exp = 0.0;
   if (s[i] == 'e' || s[i] == 'E') {
     int exp_sign = (s[++i] == '-') ? -1 : 1;
-    double exp_mantissa = 0.0, exp_exp = 1.0;
+    if (s[i] == '+' || s[i] == '-')
+      i++;
+    double exp_val = 0.0;
 
     while (isdigit(s[i]))
-      exp_mantissa = exp_mantissa * 10 + (s[i++] - '0');
+      exp_val = exp_val * 10 + (s[i++] - '0');
 
-    if (s[i] == '.')
-	i++;
-
-    while (isdigit(s[i])) {
-      exp_mantissa = exp_mantissa * 10 + (s[i++] - '0');
-      exp_exp *= 10;
-    }
-
-    exp = exp_sign * (exp_mantissa / exp_exp);
+    exp = exp_sign * exp_val;
   }
 
   return sign * (val / power) * pow(10, exp);
@@ -50,8 +44,11 @@ double atof(const char* s) {
 
 int main() {
   putf(atof("12.23"));
-  putf(atof("12.23e4"));
+  putf(atof("12.23E4"));
   putf(atof("3242.2344e-22"));
+  putf(atof("3242.2344e22"));
+  putf(atof("10e+10"));
+  putf(atof("10e-10"));
 
   return 0;
 }
