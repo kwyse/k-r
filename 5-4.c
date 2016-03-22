@@ -2,27 +2,27 @@
 
 #include "header.h"
 
+#define dbp(x) { printf("Value of %s: %p (%c)\n", #x, x, *x); }
+
 bool strend(char* s, char* t);
 
 bool strend(char* s, char* t)
 {
-    char* send = s + strlen(s);
-    char* tend = t + strlen(t);
-    while (*send-- == *tend--)
-	putchar(*send);
+    char* send = s + strlen(s) - 1;
+    char* tend = t + strlen(t) - 1;
 
-    printf("%p\n", send);
-    printf("%p\n", s);
-    printf("%p\n", tend);
-    printf("%p\n", t);
+    while ((*send) == (*tend) && tend > t) {
+        send--;
+        tend--;
+    }
 
-    return (tend == t);
+    return (tend == t && *tend == *(send));
 }
 
 int main()
 {
-    char s[100] = "the end";
-    char* t1 = "the end";
+    char s[100] = "this is not the end";
+    char t1[] = "is the end";
     strend(s, t1) ? puts("Yup") : puts("Nope");
 
     return 0;
