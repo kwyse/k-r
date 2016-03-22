@@ -5,6 +5,9 @@
 #include <stdlib.h>
 #include <string.h>
 
+// Debug a pointer to char
+#define dbp(x) { printf("Value of %s: %p (%c)\n", #x, x, *x); }
+
 void putd(int d);
 void putf(double f);
 size_t getlnlen(char* line);

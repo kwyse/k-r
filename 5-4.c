@@ -2,8 +2,6 @@
 
 #include "header.h"
 
-#define dbp(x) { printf("Value of %s: %p (%c)\n", #x, x, *x); }
-
 bool strend(char* s, char* t);
 
 bool strend(char* s, char* t)
@@ -11,19 +9,25 @@ bool strend(char* s, char* t)
     char* send = s + strlen(s) - 1;
     char* tend = t + strlen(t) - 1;
 
-    while ((*send) == (*tend) && tend > t) {
-        send--;
-        tend--;
-    }
+    while ((*send-- == *tend--) && (tend > t));
 
-    return (tend == t && *tend == *(send));
+    return ((tend == t) && (*tend == *send));
+}
+
+#define display(x, y) {\
+    printf("%s | %s -> %s\n", x, y, strend(x, y) ? "Yup" : "Nope");\
 }
 
 int main()
 {
     char s[100] = "this is not the end";
-    char t1[] = "is the end";
-    strend(s, t1) ? puts("Yup") : puts("Nope");
+    display(s, "the end");
+    display(s, "is the end");
+    display(s, "this is not the end");
+    display(s, "it is said this is not the end");
+    display(s, "e end");
+    display(s, "end of");
+    display(s, " end");
 
     return 0;
 }
