@@ -1,4 +1,4 @@
-// 5.6 : getlnlen, atoi, itoa, reverse, strindex and getop
+// 5.6 : getln, atoi, itoa, rev and strindex
 
 #include <ctype.h>
 #include "header.h"
@@ -7,6 +7,7 @@ size_t getln(const char* line);
 int atoi(const char* n);
 char* itoa(int n, char* out);
 char* rev(char* str);
+int strindex(char* s, char* t);
 
 size_t getln(const char* line)
 {
@@ -61,6 +62,19 @@ char* rev(char* str)
     return str;
 }
 
+int strindex(char* s, char* t)
+{
+    char* sstart = s;
+    char* tstart = t;
+    for( ; *s; s++) {
+	for (char* c = s; *t && (*c == *t); c++, t++);
+	if (t > tstart && *t == '\0')
+	    return s - sstart;
+    }
+	
+    return -1;
+}
+
 int main()
 {
     a(getln("I am hungry!") == 12);
@@ -90,6 +104,13 @@ int main()
     char str[] = "palindrome";
     as(rev(str), "emordnilap");
     as(rev(str), "palindrome");
+
+    a(strindex("hello", "llo") == 2);
+    a(strindex("hello", "hhello") == -1);
+    a(strindex("hello", "good bye") == -1);
+    a(strindex("hello", "hello") == 0);
+    a(strindex("hello", "o") == 4);
+    a(strindex("hello", "") == -1);
 
     return 0;
 }
