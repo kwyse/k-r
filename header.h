@@ -8,6 +8,11 @@
 // Debug a pointer to char
 #define dbp(x) { printf("Value of %s: %p (%c)\n", #x, x, *x); }
 
+// Assertions
+#define a(exp) { printf("%s | %s\n", exp ? "(/) Success" : "(x) FAILURE", #exp); }
+#define as(s1, s2) { printf("%s | %s == %s\n", \
+			    (strcmp(s1, s2) == 0) ? "(/) Success" : "(x) FAILURE", #s1, #s2); }
+
 void putd(int d);
 void putf(double f);
 size_t getlnlen(char* line);
