@@ -88,7 +88,7 @@ char* alloc(int nbytes)
 	allocptr += nbytes;
 	return allocptr - nbytes;
     } else
-	return 0;
+	return NULL;
 }
 
 // Deallocates allocated bytes

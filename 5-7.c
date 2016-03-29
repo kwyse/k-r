@@ -7,13 +7,17 @@
 char* lineptr[MAXLINES]; // array of MAXLINE elements, each of which is ptr to char
 
 int readlines(char* lineptr[], int maxlines);
+int myreadlines(char* lineptr[], int maxlines, char* store, size_t storesize);
 void writelines(char* lineptr[], int nlines);
 void myqsort(char* v[], int left, int right);
 
 int main()
 {
     int nlines = 0;
-    if ((nlines = readlines(lineptr, MAXLINES)) >= 0) {
+    static const size_t BUFSIZE = 10000;
+    char buf[BUFSIZE];
+    //if ((nlines = readlines(lineptr, MAXLINES)) >= 0) {
+    if ((nlines = myreadlines(lineptr, MAXLINES, buf, BUFSIZE)) >= 0) {
 	bench(myqsort(lineptr, 0, nlines - 1));
 	writelines(lineptr, nlines);
 	return 0;
@@ -30,8 +34,8 @@ char* alloc(int bytes);
 int readlines(char* lineptr[], int maxlines)
 {
     static const int MAXLEN = 1000;
-    int nlines = 0;
     char line[MAXLEN];
+    int nlines = 0;
     char* p = NULL;
 
     int len = -1;
@@ -39,6 +43,29 @@ int readlines(char* lineptr[], int maxlines)
 	if (nlines >= maxlines || (p = alloc(len)) == NULL)
 	    return -1;
 	else {
+	    line[len - 1] = '\0'; // Delete newline
+	    strcpy(p, line);
+	    lineptr[nlines++] = p;
+	}
+    }
+
+    return nlines;
+}
+
+int myreadlines(char* lineptr[], int maxlines, char* store, size_t storesize)
+{
+    static const int MAXLEN = 1000;
+    char line[MAXLEN];
+    int nlines = 0;
+    char* p = NULL;
+    size_t used = 0;
+
+    int len = -1;
+    while ((len = getln(line, MAXLEN)) > 0) {
+	if (nlines >= maxlines || (p = store + used) >= store + storesize)
+	    return -1;
+	else {
+	    used += len;
 	    line[len - 1] = '\0'; // Delete newline
 	    strcpy(p, line);
 	    lineptr[nlines++] = p;
