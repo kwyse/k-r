@@ -62,6 +62,8 @@ void reverse(char str[]) {
   }
 }
 
+#define inrange(x, lo, hi) (x >= lo && x <= hi)
+
 int getln(char* s, int maxlen)
 {
     int i = 0, c = 0;
