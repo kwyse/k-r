@@ -1,7 +1,10 @@
 cc = gcc
-cflags = -Wall -pedantic -std=c11
+cflags = -Wall -std=c11
+
+common_srcs = $(wildcard common/*.c)
 
 %: %.c
-	@$(cc) $(cflags) $< -o $@
-	@./$@
-	@rm $@
+	$(cc) $(cflags) $(common_srcs) $< -o exe
+
+clean:
+	rm ./exe
